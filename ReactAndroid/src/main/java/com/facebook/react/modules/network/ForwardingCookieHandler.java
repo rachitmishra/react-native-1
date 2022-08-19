@@ -138,17 +138,9 @@ public class ForwardingCookieHandler extends CookieHandler {
         // https://bugs.chromium.org/p/chromium/issues/detail?id=559720
         return null;
       } catch (Exception exception) {
-        String message = exception.getMessage();
-        // We cannot catch MissingWebViewPackageException as it is in a private / system API
-        // class. This validates the exception's message to ensure we are only handling this
-        // specific exception.
-        // https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/webkit/WebViewFactory.java#348
-        if (message != null
-            && exception.getClass().getCanonicalName().contains("MissingWebViewPackageException")) {
-          return null;
-        } else {
-          throw exception;
-        }
+        // fatal exception is not good for the user, 
+        // return null to gracefully handle all exceptions if webview package is missing for a device
+        return null
       }
     }
 
